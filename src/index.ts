@@ -1,15 +1,23 @@
 import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { setupDocumentRoutes } from "./document/routes";
+import { connect as connectToDatabase } from "./document/database";
 
 // Define our MCP agent with tools
 export class MyMCP extends McpAgent {
 	server = new McpServer({
-		name: "Authless Calculator",
+		name: "Document MCP API",
 		version: "1.0.0",
 	});
 
 	async init() {
+		// Connect to MongoDB
+		await connectToDatabase();
+		
+		// Set up document routes
+		setupDocumentRoutes(this.server);
+
 		// Simple addition tool
 		this.server.tool(
 			"add",
@@ -70,6 +78,12 @@ export default {
 		if (url.pathname === "/mcp") {
 			// @ts-ignore
 			return MyMCP.serve("/mcp").fetch(request, env, ctx);
+		}
+
+		// Serve document API routes
+		if (url.pathname.startsWith("/api")) {
+			// @ts-ignore
+			return MyMCP.serve("/api").fetch(request, env, ctx);
 		}
 
 		return new Response("Not found", { status: 404 });

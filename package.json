@@ -11,12 +11,16 @@
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
+		"@types/mime-types": "^2.1.4",
 		"typescript": "^5.8.3",
 		"wrangler": "^4.14.4"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.11.1",
 		"agents": "^0.0.80",
+		"dotenv": "^16.4.5",
+		"mime-types": "^2.1.35",
+		"mongodb": "^6.5.0",
 		"zod": "^3.24.4"
 	}
 }
